@@ -1,0 +1,22 @@
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 虚拟环境
+.venv/
+
+# PyInstaller 构建产物
+dist/
+build/
+*.spec
+
+# 日志
+*.log
+
+# IDE 文件
+.idea/
+.vscode/
+
+# 临时文件
+*.tmp
+*.cache
