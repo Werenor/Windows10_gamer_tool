@@ -125,21 +125,26 @@ def clean_recent(logger: Logger):
 def refresh_gpu_idle_tasks(logger: Logger):
     logger("  刷新 GPU IdleTasks（ProcessIdleTasks）")
     try:
-        subprocess.run(
+        subprocess.Popen(
             ["rundll32.exe", "advapi32.dll,ProcessIdleTasks"],
-            check=True
+            creationflags=subprocess.DETACHED_PROCESS
         )
+        logger("  GPU IdleTasks 已在后台执行（GUI 不会被影响）。")
     except Exception:
         logger("  GPU IdleTasks 执行异常（已忽略）。")
 
 
+
 # --------------------------
-#  刷新 DWM
+#  刷新 DWMf
 # --------------------------
 def refresh_dwm(logger: Logger):
-    logger("警告：刷新 DWM 会导致 Wallpaper Engine 暂时异常。")
-    logger("刷新 DWM（可能会瞬间黑屏）")
+    logger("警告：刷新 DWM 可能导致短暂黑屏。")
     try:
-        _run_simple_command(["taskkill", "/IM", "dwm.exe", "/F"], logger)
-    except Exception:
-        logger("  刷新 DWM 失败（权限或系统限制）。")
+        subprocess.Popen(
+            ["taskkill", "/IM", "dwm.exe", "/F"],
+            creationflags=subprocess.DETACHED_PROCESS
+        )
+        logger("  DWM 刷新任务在后台执行。")
+    except Exception as e:
+        logger(f"  刷新 DWM 失败：{e}")
